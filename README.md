@@ -2,8 +2,6 @@
 
 <a href="README.md"><img src="img/langue-fr-actif.svg" alt="FR · Français (langue affichée)" height="36"></a>&nbsp;<a href="README.en.md"><img src="img/langue-us.svg" alt="US · English" height="36"></a>
 
-**Voir le dashboard interactif : https://cnanaj-wq.github.io/pilotage-fidelisation/**
-
 ## Le projet en vidéo
 
 <table>
@@ -19,6 +17,8 @@
     </td>
   </tr>
 </table>
+
+**Voir le dashboard interactif : https://cnanaj-wq.github.io/pilotage-fidelisation/**
 
 ![Churn client : du besoin métier à l'action](img/fil-du-projet.png)
 

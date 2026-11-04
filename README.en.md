@@ -2,8 +2,6 @@
 
 <a href="README.md"><img src="img/langue-fr.svg" alt="FR · Français" height="36"></a>&nbsp;<a href="README.en.md"><img src="img/langue-us-actif.svg" alt="US · English (current language)" height="36"></a>
 
-**Open the interactive dashboard: https://cnanaj-wq.github.io/pilotage-fidelisation/** (in French)
-
 ## The project in video
 
 <table>
@@ -19,6 +17,8 @@
     </td>
   </tr>
 </table>
+
+**Open the interactive dashboard: https://cnanaj-wq.github.io/pilotage-fidelisation/** (in French)
 
 ![Customer churn: from business need to action (diagram in French)](img/fil-du-projet.png)
 
