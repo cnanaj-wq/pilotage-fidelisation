@@ -5,6 +5,11 @@
   "use strict";
 
   const D = window.DONNEES;
+  if (!D || !Array.isArray(D.clients) || !D.clients.length) {
+    document.getElementById("contenu").innerHTML = '<p class="info">Les données du dashboard n\'ont pas pu être chargées. '
+      + "Rechargez la page ; si le problème persiste, le fichier data.js est absent ou incomplet.</p>";
+    return;
+  }
   const L = D.libelles;
   const COULEURS = { rouge: "#c90a1b", bleu: "#005796", gris: "#808080" };
 
@@ -237,7 +242,7 @@
       th.setAttribute("aria-sort", b.dataset.tri === tri.cle ? (tri.sens < 0 ? "descending" : "ascending") : "none");
     });
     $("#t-liste tbody").innerHTML = visibles.length ? visibles.map((c) => `<tr>
-        <td class="code">${c.id}</td>
+        <td class="code">${echap(c.id)}</td>
         <td><div class="proba"><span class="proba__piste"><span class="proba__barre" style="width:${c.proba * 100}%"></span></span>
           <span class="proba__valeur">${pct(c.proba)}</span></div></td>
         <td>${L.contrat[c.contrat]}</td>
@@ -272,7 +277,8 @@
     lien.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
     lien.download = "liste-appels-fidelisation.csv";
     lien.click();
-    URL.revokeObjectURL(lien.href);
+    // Révoquer tout de suite peut annuler le téléchargement dans certains navigateurs
+    setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
   });
 
   // ------------------------------------------------------------ 4. Gouvernance (tables du traitement, hors filtres)
@@ -311,14 +317,14 @@
     $("#t-equite").innerHTML = `<thead><tr><th scope="col">Groupe</th><th class="num" scope="col">Clients</th>
       <th class="num" scope="col">Churn réel</th><th class="num" scope="col">Ciblés</th><th class="num" scope="col">Rappel</th>
       <th class="num" scope="col">Faux pos.</th><th class="num" scope="col">Précision</th><th class="num" scope="col">Ratio</th>
-      <th scope="col">Verdict</th></tr></thead><tbody>${groupes.map((e) => `<tr><td>${e.groupe}</td>
+      <th scope="col">Verdict</th></tr></thead><tbody>${groupes.map((e) => `<tr><td>${echap(e.groupe)}</td>
       <td class="num">${entier(e.clients)}</td><td class="num">${pct(e.churn)}</td><td class="num">${pct(e.selection)}</td>
       <td class="num">${pct(e.rappel)}</td><td class="num">${pct(e.faux_positifs)}</td><td class="num">${pct(e.precision)}</td>
       <td class="num">${dec2(e.ratio)}</td><td>${statut(e.conforme, "Conforme", "À arbitrer")}</td></tr>`).join("")}</tbody>`;
 
     $("#t-qualite").innerHTML = `<thead><tr><th scope="col">Règle</th><th scope="col">Contrôle</th>
       <th class="num" scope="col">Anomalies</th><th scope="col">Statut</th></tr></thead><tbody>${[...D.qualite]
-      .sort((a, b) => a.regle.localeCompare(b.regle)).map((q) => `<tr><td>${q.regle}</td><td>${echap(q.controle)}</td>
+      .sort((a, b) => a.regle.localeCompare(b.regle)).map((q) => `<tr><td>${echap(q.regle)}</td><td>${echap(q.controle)}</td>
       <td class="num">${entier(q.anomalies)}</td><td>${statut(q.conforme, "Conforme", "Non conforme")}</td></tr>`).join("")}</tbody>`;
 
     const horodate = (t) => `${t.slice(8, 10)}/${t.slice(5, 7)}/${t.slice(0, 4)} ${t.slice(11, 16)}`;

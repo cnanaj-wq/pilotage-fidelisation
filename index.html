@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Pilotage de la fidélisation</title>
 <meta name="description" content="Version web interactive du dashboard de prédiction du churn : qui risque de partir, combien de revenu est en jeu, qui appeler en premier. Mêmes données et mêmes règles que les rapports Power BI et Qlik Sense.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +35,7 @@
 </div>
 
 <main id="contenu">
+  <noscript><p class="info">Ce dashboard a besoin de JavaScript pour afficher les chiffres et les graphiques.</p></noscript>
 
   <!-- 1. Synthèse -->
   <section class="page" id="page-synthese" role="tabpanel" aria-labelledby="onglet-synthese" tabindex="-1">
