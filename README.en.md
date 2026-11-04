@@ -6,10 +6,10 @@
 
 <table>
   <tr>
-    <td width="420">
+    <td width="420" valign="top">
       <a href="https://cnanaj-wq.github.io/pilotage-fidelisation/video.html"><img src="img/video-en.jpg" alt="Play the project video (58 seconds): 1,039 customers to call, $79,828 per month at stake, 26.5% churn" width="420"></a>
     </td>
-    <td>
+    <td valign="top">
       <a href="https://cnanaj-wq.github.io/pilotage-fidelisation/video.html"><b>$79,828 a month at stake: who should we call on Monday morning?</b></a><br><br>
       Cédric NANA · Data Analytics consultant<br>
       ▷ 0:58 · video in French<br><br>

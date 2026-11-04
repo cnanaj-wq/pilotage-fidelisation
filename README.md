@@ -6,10 +6,10 @@
 
 <table>
   <tr>
-    <td width="420">
+    <td width="420" valign="top">
       <a href="https://cnanaj-wq.github.io/pilotage-fidelisation/video.html"><img src="img/video-fr.jpg" alt="Lire la vidéo du projet (58 secondes) : 1 039 clients à appeler, 79 828 $ par mois en jeu, 26,5 % de churn" width="420"></a>
     </td>
-    <td>
+    <td valign="top">
       <a href="https://cnanaj-wq.github.io/pilotage-fidelisation/video.html"><b>79 828 $ par mois en jeu : qui appeler lundi matin ?</b></a><br><br>
       Cédric NANA · Consultant Data Analytics<br>
       ▷ 0:58 · vidéo en français<br><br>
