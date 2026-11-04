@@ -1,5 +1,7 @@
 # Pilotage de la fidélisation : prédire le churn client
 
+**Français** · [English](README.en.md)
+
 **Voir le dashboard interactif : https://cnanaj-wq.github.io/pilotage-fidelisation/**
 
 ![Churn client : du besoin métier à l'action](img/fil-du-projet.png)
@@ -43,6 +45,115 @@ Autour de la chaîne, des garanties de confiance :
 - **Sécurité :** compte BI en lecture seule, codes clients pseudonymisés (HMAC-SHA256), sans genre ni âge côté BI.
 - **Fraîcheur :** recalcul planifié chaque lundi, contrôles qualité bloquants et alerte en cas d'échec.
 - **Équité :** un contrôle compare le ciblage par genre et par statut senior, et signale les écarts à arbitrer.
+
+## L'architecture
+
+```mermaid
+flowchart LR
+  src["Fichier Kaggle<br/>Telco Customer Churn<br/>7 043 clients"] --> prep
+
+  subgraph DSS["Dataiku"]
+    prep["Préparation<br/>RG01 · RG03 · RG04"] --> ind["Indicateurs métier<br/>recette Python"]
+    ind --> mod["Modèle<br/>régression logistique<br/>AUC 0,860"]
+    mod --> seg["Score et segment<br/>RG05"]
+    seg --> gov["compute_churn_gov<br/>5 contrôles bloquants<br/>pseudonymisation · équité"]
+  end
+
+  subgraph PG["PostgreSQL"]
+    bi[("churn_risk_bi<br/>pseudonymisée")]
+    tgov[("gov_qualite · gov_equite<br/>gov_runs")]
+    nom[("Table nominative<br/>correspondance et clé")]
+  end
+
+  gov --> bi
+  gov --> tgov
+  gov --> nom
+
+  bi --> pbi["Power BI Desktop<br/>compte en lecture seule"]
+  tgov --> pbi
+  bi --> exp["Export CSV<br/>des 4 tables BI"]
+  tgov --> exp
+  exp --> qlik["Qlik Sense Desktop"]
+  exp --> web["Version web<br/>GitHub Pages"]
+  nom -. "accès refusé au compte BI" .- pbi
+
+  plan["Planificateur Windows<br/>lundi 06:00 + rattrapage"] -. "recalcul sans réentraînement" .-> DSS
+```
+
+- **Une seule source pour la BI :** Power BI, Qlik Sense et la version web lisent les mêmes tables. Aucun outil
+  ne recalcule le score.
+- **Les données nominatives restent en amont :** le compte BI ne lit que la table pseudonymisée et les tables
+  de contrôle. La base lui refuse la table nominative, la table de correspondance et la clé.
+- **Un recalcul chaque lundi à 6 h :** la chaîne tourne en 3 min 30, rattrapée à l'ouverture de session si le
+  PC était éteint. Elle est idempotente : rejouée trois fois, elle redonne les mêmes chiffres.
+
+### Scénarios de fonctionnement
+
+| Situation | Ce qui se passe | Ce que voit l'utilisateur |
+|---|---|---|
+| Recalcul réussi | Les tables BI et les tables de contrôle sont remplacées | Journal « Réussi », date du dernier calcul à jour |
+| Anomalie de qualité (doublon, charge négative…) | Le traitement s'arrête avant d'écrire | La BI garde la dernière version saine, l'anomalie apparaît dans les contrôles |
+| Panne du traitement | Code d'échec, fichier d'alerte, ligne au journal et notification Windows | Journal « Échec », la table lue par la BI reste intacte |
+| Plus de 7 jours sans calcul réussi (RG08) | Rien n'est recalculé | La page Gouvernance signale une liste qui n'est plus à jour |
+| Écart d'équité (ratio < 0,80 ou rappel > 10 points) | Le contrôle le mesure à chaque calcul | L'alerte reste affichée jusqu'à l'arbitrage du métier |
+
+## Le logigramme de fidélisation
+
+Chaque semaine, chaque client reçoit un score, un segment et une seule action. Les règles s'appliquent dans
+l'ordre : la première qui correspond l'emporte.
+
+```mermaid
+flowchart TD
+  A["Recalcul du lundi<br/>score de chaque client"] --> B{"Client encore actif ?"}
+  B -- Non --> X["Hors liste<br/>client déjà parti (RG02)"]
+  B -- Oui --> C{"Segment de risque ?"}
+  C -- "Faible, moins de 30 %" --> F["Pas d'action ciblée<br/>2 803 clients"]
+  C -- "Moyen, 30 à 60 %" --> M["Hors liste d'appels<br/>1 332 clients<br/>réévalués chaque semaine"]
+  C -- "Élevé, 60 % et plus" --> D{"Contrat sans engagement ?"}
+  D -- Oui --> S1["Scénario 1<br/>Offre d'engagement 12 mois"]
+  D -- Non --> E{"12 mois d'ancienneté ou moins ?"}
+  E -- Oui --> S2["Scénario 2<br/>Appel d'accueil<br/>point à 3 et 6 mois"]
+  E -- Non --> G{"2 services ou moins ?"}
+  G -- Oui --> S3["Scénario 3<br/>Proposer un service<br/>sécurité ou support"]
+  G -- Non --> H{"Client fibre ?"}
+  H -- Oui --> S4["Scénario 4<br/>Revue tarifaire fibre"]
+  H -- Non --> I{"Paiement manuel ?"}
+  I -- Oui --> S5["Scénario 5<br/>Inciter au prélèvement automatique"]
+  I -- Non --> S6["Scénario 6<br/>Suivi standard"]
+  S1 --> T["Tester l'action sur une partie des clients<br/>avec un groupe témoin non contacté"]
+  S2 --> T
+  S3 --> T
+  S4 --> T
+  S5 --> T
+  T --> U{"Moins de départs que le groupe témoin<br/>après 2 à 3 mois ?"}
+  U -- Oui --> V["Généraliser l'action"]
+  U -- Non --> W["Ajuster ou abandonner l'action"]
+  M -. "si l'équipe a de la capacité :<br/>abaisser le seuil" .-> D
+```
+
+### Les scénarios
+
+Sur les 5 174 clients actifs, 1 039 sont à risque élevé et entrent dans la liste d'appels :
+
+| Scénario | Qui est concerné | Action | Clients | Revenu mensuel | Indicateur de suivi |
+|---|---|---|---:|---:|---|
+| 1. Engagement | Risque élevé, contrat sans engagement | Offre de passage à 12 mois avec un avantage | 1 011 | 77 128 $ | Taux de conversion vers l'annuel |
+| 2. Accueil | Risque élevé, engagé, 12 mois d'ancienneté ou moins | Appel de bienvenue, point à 3 et 6 mois | 7 | 583 $ | Churn des clients de moins d'un an |
+| 3. Équipement | Risque élevé, engagé, ancien, 2 services ou moins | Offrir l'option sécurité ou support quelques mois | 0 | 0 $ | Nombre moyen de services |
+| 4. Prix fibre | Risque élevé, engagé, ancien, bien équipé, fibre | Revue tarifaire ciblée | 21 | 2 116 $ | Churn des clients fibre |
+| 5. Paiement | Risque élevé, autres cas, paiement manuel | Inciter au prélèvement automatique | 0 | 0 $ | Part de paiements automatiques |
+| 6. Suivi standard | Risque élevé, aucun des cas précédents | Pas d'action particulière | 0 | 0 $ | – |
+| **Total** | | | **1 039** | **79 828 $** | |
+
+Les scénarios 3, 5 et 6 ne concernent aucun client à risque élevé aujourd'hui : presque tous sont sans
+engagement et sont pris par le scénario 1. Les règles restent en place pour les prochains recalculs, ou si le
+métier abaisse le seuil et intègre une partie des 1 332 clients à risque moyen.
+
+Les clients à risque moyen et faible ne sont pas appelés : leur action suggérée est calculée, mais elle n'est
+pas déclenchée. Les clients déjà partis sont exclus de la liste.
+
+Le seuil de 60 % est une proposition à calibrer selon la capacité d'appel : à 75 %, la liste tombe à 443 clients
+actifs.
 
 ## L'impact métier
 
