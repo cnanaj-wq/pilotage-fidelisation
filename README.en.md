@@ -1,6 +1,6 @@
 # Retention management: predicting customer churn
 
-[Français](README.md) · **English**
+<a href="README.md"><img src="img/langue-fr.svg" alt="FR · Français" height="36"></a>&nbsp;<a href="README.en.md"><img src="img/langue-us-actif.svg" alt="US · English (current language)" height="36"></a>
 
 **Open the interactive dashboard: https://cnanaj-wq.github.io/pilotage-fidelisation/** (in French)
 
@@ -49,7 +49,7 @@ Trust safeguards around the pipeline:
 ## Architecture
 
 ```mermaid
-flowchart LR
+flowchart TD
   src["Kaggle file<br/>Telco Customer Churn<br/>7,043 customers"] --> prep
 
   subgraph DSS["Dataiku"]

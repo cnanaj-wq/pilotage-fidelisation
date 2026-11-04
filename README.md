@@ -1,6 +1,6 @@
 # Pilotage de la fidélisation : prédire le churn client
 
-**Français** · [English](README.en.md)
+<a href="README.md"><img src="img/langue-fr-actif.svg" alt="FR · Français (langue affichée)" height="36"></a>&nbsp;<a href="README.en.md"><img src="img/langue-us.svg" alt="US · English" height="36"></a>
 
 **Voir le dashboard interactif : https://cnanaj-wq.github.io/pilotage-fidelisation/**
 
@@ -49,7 +49,7 @@ Autour de la chaîne, des garanties de confiance :
 ## L'architecture
 
 ```mermaid
-flowchart LR
+flowchart TD
   src["Fichier Kaggle<br/>Telco Customer Churn<br/>7 043 clients"] --> prep
 
   subgraph DSS["Dataiku"]
