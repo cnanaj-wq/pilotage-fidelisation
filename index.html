@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilotage de la fidélisation</title>
+<meta name="description" content="Version web interactive du dashboard de prédiction du churn : qui risque de partir, combien de revenu est en jeu, qui appeler en premier. Mêmes données et mêmes règles que les rapports Power BI et Qlik Sense.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+
+<header class="bandeau-titre">
+  <div class="bandeau-titre__texte">
+    <h1>Pilotage de la fidélisation</h1>
+    <p>Qui risque de partir, combien de revenu est en jeu, qui appeler en premier</p>
+  </div>
+  <nav class="onglets" role="tablist" aria-label="Pages du dashboard">
+    <button role="tab" id="onglet-synthese" aria-controls="page-synthese" data-page="synthese">Synthèse</button>
+    <button role="tab" id="onglet-segment" aria-controls="page-segment" data-page="segment">Par segment</button>
+    <button role="tab" id="onglet-plan" aria-controls="page-plan" data-page="plan">Plan d'action</button>
+    <button role="tab" id="onglet-gouvernance" aria-controls="page-gouvernance" data-page="gouvernance">Gouvernance</button>
+  </nav>
+</header>
+
+<div class="barre-selection" id="barre-selection" aria-live="polite" hidden>
+  <span class="barre-selection__titre">Sélection en cours</span>
+  <ul class="barre-selection__liste" id="liste-selection"></ul>
+  <button class="lien" id="tout-effacer" type="button">Tout effacer</button>
+</div>
+
+<main id="contenu">
+
+  <!-- 1. Synthèse -->
+  <section class="page" id="page-synthese" role="tabpanel" aria-labelledby="onglet-synthese" tabindex="-1">
+    <div class="page__tete">
+      <div>
+        <h2>Combien est en jeu, et où agir</h2>
+        <p class="sous-titre">Cliquez sur une barre pour filtrer toutes les pages, comme dans Qlik Sense.</p>
+      </div>
+      <button class="bouton-secondaire" type="button" data-comparer="synthese">Voir la page dans Power BI et Qlik Sense</button>
+    </div>
+    <div class="kpis" id="kpis-synthese"></div>
+    <p class="info" id="bandeau-revenu"></p>
+    <div class="grille-2">
+      <article class="carte">
+        <h3>Le contrat sans engagement concentre le risque</h3>
+        <p class="sous-titre" id="st-contrat">Taux de résiliation par type de contrat · rouge = au-dessus de la moyenne</p>
+        <div class="graphe" id="g-contrat"></div>
+      </article>
+      <article class="carte">
+        <h3>Combien de clients actifs dans chaque segment ?</h3>
+        <p class="sous-titre">Élevé ≥ 60 %, Moyen 30-60 %, Faible &lt; 30 % · seuils à ajuster selon la capacité d'appel</p>
+        <div class="graphe" id="g-risque"></div>
+      </article>
+    </div>
+    <h3 class="titre-bloc">Trois leviers à actionner</h3>
+    <div class="leviers" id="leviers"></div>
+  </section>
+
+  <!-- 2. Par segment -->
+  <section class="page" id="page-segment" role="tabpanel" aria-labelledby="onglet-segment" tabindex="-1" hidden>
+    <div class="page__tete">
+      <div>
+        <h2>Où le risque se concentre</h2>
+        <p class="sous-titre">Taux de résiliation observé par segment · sélectionnez une barre ou un filtre pour cibler</p>
+      </div>
+      <button class="bouton-secondaire" type="button" data-comparer="par-segment">Voir la page dans Power BI et Qlik Sense</button>
+    </div>
+    <div class="filtres" data-filtres="contrat risque anciennete paiement"></div>
+    <div class="grille-2">
+      <article class="carte">
+        <h3>Les nouveaux clients partent-ils davantage ?</h3>
+        <p class="sous-titre" data-moyenne="anciennete"></p>
+        <div class="graphe" id="g-anciennete"></div>
+      </article>
+      <article class="carte">
+        <h3>Quel type d'internet est le plus exposé ?</h3>
+        <p class="sous-titre" data-moyenne="internet"></p>
+        <div class="graphe" id="g-internet"></div>
+      </article>
+      <article class="carte">
+        <h3>Le niveau d'équipement retient-il les clients ?</h3>
+        <p class="sous-titre">Taux de churn par nombre de services · le risque culmine à 3 services puis recule</p>
+        <div class="graphe" id="g-services"></div>
+      </article>
+      <article class="carte">
+        <h3>Le paiement automatique protège-t-il ?</h3>
+        <p class="sous-titre" data-moyenne="paiement"></p>
+        <div class="graphe" id="g-paiement"></div>
+        <p class="note">Corrélations observées, pas des causes démontrées.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 3. Plan d'action -->
+  <section class="page" id="page-plan" role="tabpanel" aria-labelledby="onglet-plan" tabindex="-1" hidden>
+    <div class="page__tete">
+      <div>
+        <h2>Plan d'action : qui appeler en premier</h2>
+        <p class="sous-titre">Clients actifs à risque élevé (probabilité de départ ≥ 60 %), du plus au moins probable · actions à valider avec le métier</p>
+      </div>
+      <button class="bouton-secondaire" type="button" data-comparer="plan-action">Voir la page dans Power BI et Qlik Sense</button>
+    </div>
+    <div class="filtres" data-filtres="contrat anciennete internet"></div>
+    <div class="kpis kpis--3" id="kpis-plan"></div>
+    <article class="carte">
+      <div class="carte__tete">
+        <div>
+          <h3>Qui appeler en premier ?</h3>
+          <p class="sous-titre" id="compte-liste"></p>
+        </div>
+        <div class="outils-liste">
+          <label class="recherche">
+            <span class="visuellement-cache">Rechercher un code client</span>
+            <input type="search" id="recherche" placeholder="Rechercher un code client" autocomplete="off">
+          </label>
+          <button class="bouton-secondaire" type="button" id="telecharger">Télécharger la liste (CSV)</button>
+        </div>
+      </div>
+      <div class="defilement-tableau">
+        <table class="tableau tableau--liste" id="t-liste">
+          <thead><tr>
+            <th scope="col"><button type="button" data-tri="id">Client (pseudonyme)</button></th>
+            <th scope="col" class="col-proba"><button type="button" data-tri="proba">Probabilité de départ</button></th>
+            <th scope="col"><button type="button" data-tri="contrat">Contrat</button></th>
+            <th scope="col"><button type="button" data-tri="anciennete">Ancienneté</button></th>
+            <th scope="col" class="num"><button type="button" data-tri="charges">Charges</button></th>
+            <th scope="col"><button type="button" data-tri="action">Action suggérée</button></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="pied-liste">
+        <button class="bouton-secondaire" type="button" id="plus">Afficher 25 clients de plus</button>
+      </div>
+      <p class="note">Code client pseudonymisé (HMAC-SHA256) : seul le rôle de fidélisation peut retrouver le client derrière ce code.</p>
+    </article>
+  </section>
+
+  <!-- 4. Gouvernance -->
+  <section class="page" id="page-gouvernance" role="tabpanel" aria-labelledby="onglet-gouvernance" tabindex="-1" hidden>
+    <div class="page__tete">
+      <div>
+        <h2>Peut-on se fier aux chiffres ?</h2>
+        <p class="sous-titre">Contrôles qualité bloquants, clients pseudonymisés, contrôle d'équité et journal des calculs · cette page ne dépend pas des filtres</p>
+      </div>
+      <button class="bouton-secondaire" type="button" data-comparer="gouvernance">Voir la page dans Power BI et Qlik Sense</button>
+    </div>
+    <div class="kpis" id="kpis-gouvernance"></div>
+    <p class="info" id="bandeau-equite"></p>
+    <div class="grille-gouv">
+      <article class="carte">
+        <h3>Ciblage par groupe</h3>
+        <p class="sous-titre">Part au segment élevé · rouge = à arbitrer</p>
+        <div class="graphe" id="g-ciblage"></div>
+      </article>
+      <article class="carte">
+        <h3>Détail du contrôle d'équité</h3>
+        <p class="sous-titre">Clients test jamais vus à l'entraînement · seuils : ratio ≥ 0,80, écart de rappel ≤ 10 points</p>
+        <div class="defilement-tableau"><table class="tableau" id="t-equite"></table></div>
+      </article>
+    </div>
+    <div class="grille-gouv grille-gouv--bas">
+      <article class="carte">
+        <h3>Contrôles de qualité du dernier calcul</h3>
+        <p class="sous-titre">Une anomalie bloque le traitement : la BI garde la dernière version saine</p>
+        <div class="defilement-tableau"><table class="tableau" id="t-qualite"></table></div>
+      </article>
+      <article class="carte">
+        <h3>Journal des recalculs</h3>
+        <p class="sous-titre">Chaque lundi à 06:00, rattrapage à l'ouverture de session · « test-panne » = panne provoquée pour tester l'alerte</p>
+        <div class="defilement-tableau"><table class="tableau" id="t-journal"></table></div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="pied">
+  <p>Version web interactive, reproduite à partir des mêmes données et des mêmes règles que les rapports Power BI et Qlik Sense du projet.</p>
+  <p>Source : données publiques Kaggle Telco Customer Churn (7 043 clients) · score calculé dans Dataiku, publié dans PostgreSQL · Cédric NANA, consultant BI &amp; Data.</p>
+</footer>
+
+<dialog class="comparaison" id="comparaison" aria-labelledby="comparaison-titre">
+  <div class="comparaison__tete">
+    <h2 id="comparaison-titre">Le même écran dans Power BI (en haut) et Qlik Sense (en bas)</h2>
+    <button class="fermer" type="button" id="fermer-comparaison" aria-label="Fermer">×</button>
+  </div>
+  <img id="comparaison-image" src="img/comparaison-synthese.webp"
+       alt="Page Synthèse dans Power BI, au-dessus de la même feuille dans Qlik Sense" width="1400" height="1620">
+</dialog>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
