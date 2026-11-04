@@ -4,6 +4,22 @@
 
 **Open the interactive dashboard: https://cnanaj-wq.github.io/pilotage-fidelisation/** (in French)
 
+## The project in video
+
+<table>
+  <tr>
+    <td width="420">
+      <a href="https://cnanaj-wq.github.io/pilotage-fidelisation/video.html"><img src="img/video-en.jpg" alt="Play the project video (58 seconds): 1,039 customers to call, $79,828 per month at stake, 26.5% churn" width="420"></a>
+    </td>
+    <td>
+      <a href="https://cnanaj-wq.github.io/pilotage-fidelisation/video.html"><b>$79,828 a month at stake: who should we call on Monday morning?</b></a><br><br>
+      Cédric NANA · Data Analytics consultant<br>
+      ▷ 0:58 · video in French<br><br>
+      Dataiku predicts, PostgreSQL stores, Power BI and Qlik Sense report: the project in under a minute.
+    </td>
+  </tr>
+</table>
+
 ![Customer churn: from business need to action (diagram in French)](img/fil-du-projet.png)
 
 ## The project

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Vidéo du projet churn</title>
+<meta name="description" content="Présentation en vidéo (58 s) du projet de prédiction du churn : de la question métier à la liste d'appels du lundi matin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .video { max-width: 960px; margin: 0 auto; padding: var(--e-5) var(--e-4) var(--e-6); display: grid; gap: var(--e-5); grid-template-columns: minmax(0, 420px) 1fr; align-items: start; }
+  .video video { width: 100%; height: auto; aspect-ratio: 1080 / 1350; background: #000; border-radius: var(--rayon); box-shadow: var(--ombre); }
+  .video h2 { font-size: var(--t-xl); line-height: 1.2; margin-bottom: var(--e-2); }
+  .video p { max-width: 60ch; margin-bottom: var(--e-3); }
+  .video ul { margin: 0 0 var(--e-4) 1.1em; display: grid; gap: var(--e-1); }
+  .video .liens { display: flex; flex-wrap: wrap; gap: var(--e-2); }
+  .video .liens a { text-decoration: none; }
+  @media (max-width: 800px) { .video { grid-template-columns: 1fr; } .video video { max-width: 420px; margin: 0 auto; } }
+</style>
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+
+<header class="bandeau-titre">
+  <div class="bandeau-titre__texte">
+    <h1>Pilotage de la fidélisation</h1>
+    <p>Le projet en vidéo · 58 secondes</p>
+  </div>
+</header>
+
+<main id="contenu" class="video">
+  <video controls playsinline preload="metadata" poster="video/apercu.jpg">
+    <source src="video/pilotage-fidelisation.mp4" type="video/mp4">
+    Votre navigateur ne lit pas cette vidéo. <a href="video/pilotage-fidelisation.mp4">Téléchargez-la</a>.
+  </video>
+  <div>
+    <h2>79 828 $ par mois en jeu : qui appeler lundi matin ?</h2>
+    <p>En moins d'une minute, le chemin du projet : Dataiku prépare les données et calcule un score de risque
+      pour chaque client, PostgreSQL le stocke, Power BI et Qlik Sense le restituent.</p>
+    <ul>
+      <li>1 039 clients actifs à risque élevé, triés du plus au moins probable.</li>
+      <li>Les clients sans engagement partent le plus : 42,7 %.</li>
+      <li>Des chiffres fiables : 5 contrôles bloquants, clients pseudonymisés.</li>
+    </ul>
+    <div class="liens">
+      <a class="bouton-secondaire" href="./">Ouvrir le dashboard interactif</a>
+      <a class="bouton-secondaire" href="https://github.com/cnanaj-wq/pilotage-fidelisation">Voir le projet sur GitHub</a>
+    </div>
+  </div>
+</main>
+
+<footer class="pied">
+  <p>Vidéo en français. Données publiques Kaggle Telco Customer Churn (7 043 clients).</p>
+  <p>Cédric NANA, consultant Data Analytics.</p>
+</footer>
+</body>
+</html>
