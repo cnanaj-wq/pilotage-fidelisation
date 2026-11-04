@@ -16,4 +16,4 @@ Mêmes données et mêmes règles que les deux rapports : données publiques Kag
 HTML, CSS et JavaScript sans dépendance : il suffit d'ouvrir `index.html` via un petit serveur local
 (`python -m http.server`).
 
-Cédric NANA, consultant BI & Data.
+Cédric NANA, consultant Data Analytics.
