@@ -11,7 +11,7 @@
     </td>
     <td valign="top">
       <a href="https://cnanaj-wq.github.io/pilotage-fidelisation/video.html"><b>79 828 $ par mois en jeu : qui appeler lundi matin ?</b></a><br><br>
-      Cédric NANA · Consultant Data Analytics<br>
+      Cédric NANA — Expert BI & Data | Analytics & AI Automation<br>
       ▷ 0:58 · vidéo en français<br><br>
       Dataiku prédit, PostgreSQL stocke, Power BI et Qlik Sense restituent : le projet en moins d'une minute.
     </td>
@@ -204,4 +204,4 @@ téléchargez le dépôt, lancez `python -m http.server` dans le dossier, puis o
 Jeu de données public Telco Customer Churn, publié sur Kaggle et issu des jeux de données d'exemple d'IBM :
 https://www.kaggle.com/datasets/blastchar/telco-customer-churn
 
-Cédric NANA, consultant Data Analytics.
+Cédric NANA — Expert BI & Data | Analytics & AI Automation.

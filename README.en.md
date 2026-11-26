@@ -11,7 +11,7 @@
     </td>
     <td valign="top">
       <a href="https://cnanaj-wq.github.io/pilotage-fidelisation/video.html"><b>$79,828 a month at stake: who should we call on Monday morning?</b></a><br><br>
-      Cédric NANA · Data Analytics consultant<br>
+      Cédric NANA — Expert BI & Data | Analytics & AI Automation<br>
       ▷ 0:58 · video in French<br><br>
       Dataiku predicts, PostgreSQL stores, Power BI and Qlik Sense report: the project in under a minute.
     </td>
@@ -204,4 +204,4 @@ download the repository, run `python -m http.server` in the folder, then open ht
 Public Telco Customer Churn dataset, published on Kaggle and derived from IBM sample datasets:
 https://www.kaggle.com/datasets/blastchar/telco-customer-churn
 
-Cédric NANA, Data Analytics consultant.
+Cédric NANA — Expert BI & Data | Analytics & AI Automation.
